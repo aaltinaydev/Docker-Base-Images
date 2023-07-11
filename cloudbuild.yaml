@@ -20,7 +20,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 build ${_DISTRO}:$TAG_NAME ${_DEBUG}
+    - /workspace/bashbrew-amd64 ${_DEBUG} build ${_DISTRO}:$TAG_NAME
 # Apply all the tags same as $TAG_NAME. For example, ubuntu:focal also has a tag of 20.04.
 # Example run: $bashbrew-amd64 tag --target-namespace=aaltinay-gcp-dev ubuntu:focal
 # This will add other equivalent tags to the built image.
@@ -30,7 +30,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:$TAG_NAME ${_DEBUG}
+    - /workspace/bashbrew-amd64 ${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:$TAG_NAME
 
 substitutions:
     # Default values for substitution variables.
