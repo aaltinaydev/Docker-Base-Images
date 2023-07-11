@@ -1,0 +1,45 @@
+# Usage:gcloud builds submit --config ./cloudbuild.yaml --substitutions=TAG_NAME="focal"
+# The data in /workspace is kept between steps.
+#
+steps:
+- name: 'bash'
+  script: |
+    wget --directory-prefix=/workspace https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-amd64
+- name: 'bash'
+  script: uname -a
+- name: 'bash'
+  script: chmod +x /workspace/bashbrew-amd64
+- name: 'gcr.io/cloud-builders/git'
+  args:
+    - clone
+    - https://github.com/docker-library/official-images.git
+    - /workspace/official-images
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: "bash"
+  env:
+    - 'BASHBREW_LIBRARY=/workspace/official-images/library'
+  args:
+    - '-c'
+    - /workspace/bashbrew-amd64 build ${_DISTRO}:$TAG_NAME ${_DEBUG}
+# Apply all the tags same as $TAG_NAME. For example, ubuntu:focal also has a tag of 20.04.
+# Example run: $bashbrew-amd64 tag --target-namespace=aaltinay-gcp-dev ubuntu:focal
+# This will add other equivalent tags to the built image.
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: "bash"
+  env:
+    - 'BASHBREW_LIBRARY=/workspace/official-images/library'
+  args:
+    - '-c'
+    - /workspace/bashbrew-amd64 tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:$TAG_NAME ${_DEBUG}
+
+substitutions:
+    # Default values for substitution variables.
+    # These variables are altered in the cloudbuild trigger definition
+    _OUTPUT_PROJECT: aaltinay-gcp-dev
+    _DISTRO: ubuntu
+    _IMG_DEST: '${_OUTPUT_PROJECT}/${_DISTRO}'
+    _DEBUG: ''
+options:
+    dynamic_substitutions: true
+images:
+  - 'us.gcr.io/${_IMG_DEST}'
