@@ -1,6 +1,5 @@
-# Usage:gcloud builds submit --config ./cloudbuild.yaml --substitutions=TAG_NAME="focal"
+# Usage:gcloud builds submit --config ./cloudbuild.yaml --substitutions=_TAG="focal"
 # The data in /workspace is kept between steps.
-#
 steps:
 - name: 'bash'
   script: |
@@ -20,7 +19,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 ${_DEBUG} build ${_DISTRO}:$TAG_NAME
+    - /workspace/bashbrew-amd64 ${_DEBUG} build ${_DISTRO}:${_TAG}
 # Apply all the tags same as $TAG_NAME. For example, ubuntu:focal also has a tag of 20.04.
 # Example run: $bashbrew-amd64 tag --target-namespace=aaltinay-gcp-dev ubuntu:focal
 # This will add other equivalent tags to the built image.
@@ -30,7 +29,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 ${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:$TAG_NAME
+    - /workspace/bashbrew-amd64 ${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:${_TAG}
 
 substitutions:
     # Default values for substitution variables.
@@ -39,6 +38,7 @@ substitutions:
     _DISTRO: ubuntu
     _IMG_DEST: '${_OUTPUT_PROJECT}/${_DISTRO}'
     _DEBUG: ''
+    _TAG: ''
 options:
     dynamic_substitutions: true
 images:
