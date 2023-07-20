@@ -30,7 +30,7 @@ steps:
   args:
     - '-c'
     - /workspace/bashbrew-amd64 ${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:${_TAG}
-- name: 'bash'
+- name: 'gcr.io/cloud-builders/docker'
   script: /workspace/official-images/test/run.sh ${_DISTRO}:${_TAG}
 substitutions:
     # Default values for substitution variables.
