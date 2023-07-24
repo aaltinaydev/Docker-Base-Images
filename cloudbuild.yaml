@@ -19,7 +19,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 ${_DEBUG} build ${_DISTRO}:${_TAG}
+    - /workspace/bashbrew-amd64 --debug=${_DEBUG} build ${_DISTRO}:${_TAG}
 # Run tests on the build images.
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: "bash"
@@ -42,7 +42,7 @@ steps:
     - 'BASHBREW_LIBRARY=/workspace/official-images/library'
   args:
     - '-c'
-    - /workspace/bashbrew-amd64 ${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:${_TAG}
+    - /workspace/bashbrew-amd64 --debug=${_DEBUG} tag --target-namespace=us.gcr.io/${_OUTPUT_PROJECT} ${_DISTRO}:${_TAG}
 substitutions:
     # Default values for substitution variables.
     # These variables are altered in the cloudbuild trigger definition
