@@ -49,7 +49,7 @@ substitutions:
     _OUTPUT_PROJECT: aaltinay-gcp-dev
     _DISTRO: ubuntu
     _IMG_DEST: '${_OUTPUT_PROJECT}/${_DISTRO}'
-    _DEBUG: ''
+    _DEBUG: false
     _TAG: ''
 options:
     dynamic_substitutions: true
