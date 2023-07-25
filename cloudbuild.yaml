@@ -1,6 +1,7 @@
 # Usage:gcloud builds submit --config ./cloudbuild.yaml --substitutions=_TAG="focal"
 # The data in /workspace is kept between steps.
 steps:
+# TODO:Build bashbrew from source.
 - name: 'bash'
   script: |
     wget --directory-prefix=/workspace https://doi-janky.infosiftr.net/job/bashbrew/job/master/lastSuccessfulBuild/artifact/bashbrew-amd64
